@@ -16,7 +16,6 @@ const Home = () => {
   return (
     <Container hasBack={false} isShowHeader={false} style={styles.container}>
       <CalendarPicker
-        maxDate={new Date()}
         onDateChange={time => {
           setDate(getDate(time.toString()));
         }}

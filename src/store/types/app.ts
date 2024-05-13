@@ -7,7 +7,7 @@ export interface ITodo {
   title?: string;
   time_create?: string;
   time_stam_end?: number;
-  time_end?: string;
+  time_start?: string;
   status?: TStatus;
   noti?: boolean;
   comment?: string;

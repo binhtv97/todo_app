@@ -1,13 +1,15 @@
-import notifee, {TimestampTrigger, TriggerType} from '@notifee/react-native';
-import {ITodo} from '@store/types';
-import {getHourAndMinute} from '@utilities/date';
+import notifee, {TimestampTrigger, TriggerType} from "@notifee/react-native";
+import {ITodo} from "@store/types";
+import {getHourAndMinute} from "@utilities/date";
 
 export async function onCreateTriggerNotification(item: ITodo) {
   // Request permissions (required for iOS)
   try {
     await notifee.requestPermission();
-    const {time_end, title, comment, id} = item;
-    const {hour, minute} = getHourAndMinute(time_end as string);
+    const {time_start, title, comment, id} = item;
+    const {hour, minute} = getHourAndMinute(time_start as string);
+    console.log(hour, minute);
+
     const date = new Date(Date.now());
     date.setHours(hour);
     date.setMinutes(minute);
@@ -17,17 +19,19 @@ export async function onCreateTriggerNotification(item: ITodo) {
     };
 
     // Create a trigger notification
-    await notifee.createTriggerNotification(
-      {
-        id: id,
-        title: title,
-        body: comment,
-        android: {
-          channelId: 'your-channel-id',
+    await notifee
+      .createTriggerNotification(
+        {
+          id: id,
+          title: title,
+          body: comment,
+          android: {
+            channelId: "your-channel-id",
+          },
         },
-      },
-      trigger,
-    );
+        trigger
+      )
+      .then((res) => console.log(res));
   } catch (error) {
     console.log(error);
   }

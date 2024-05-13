@@ -34,7 +34,7 @@ const FormSchema = yup.object().shape({
   }),
   title: yup.string().required('Please enter title!'),
   comment: yup.string(),
-  time_end: yup.string().required('Please choose time end!'),
+  time_start: yup.string().required('Please choose time end!'),
   id: yup.string(),
   noti: yup.boolean(),
   time_stam_end: yup.number(),
@@ -44,7 +44,6 @@ type FormPayload = yup.InferType<typeof FormSchema>;
 
 const selectData: Item[] = [
   {id: 1, label: 'Doing'},
-  {id: 2, label: 'Finish'},
   {id: 3, label: 'Pending'},
   {id: 4, label: 'Critical'},
 ];
@@ -55,7 +54,7 @@ const AddTodo = () => {
       options: selectData,
       title: '',
       comment: '',
-      time_end: '',
+      time_start: '',
       id: Math.random().toString(),
       noti: false,
       time_stam_end: 0,
@@ -70,7 +69,7 @@ const AddTodo = () => {
     const status = res.options as Item[];
     const data: ITodo = {
       id: res.id,
-      time_end: res.time_end,
+      time_start: res.time_start,
       comment: res.comment,
       title: res.title,
       time_create: today,
@@ -100,7 +99,7 @@ const AddTodo = () => {
         <DatePickerModal
           visible={visible}
           onSubmit={(date, timestam) => {
-            setValue('time_end', date);
+            setValue('time_start', date);
             setValue('time_stam_end', timestam);
           }}
           onClose={() => {
@@ -109,7 +108,7 @@ const AddTodo = () => {
         />
         <Space height={10} />
         <FormInput
-          name="time_end"
+          name="time_start"
           title="Time End"
           editable={false}
           iconClose={false}
@@ -120,8 +119,8 @@ const AddTodo = () => {
           <TitleRequire title="Noti me" />
           <Switch
             disabled={
-              watch('time_end') === '' ||
-              compareTime(watch('time_end') as string)
+              watch('time_start') === '' ||
+              compareTime(watch('time_start') as string)
             }
             value={watch('noti') as boolean}
             onChange={({nativeEvent}) => {
@@ -129,7 +128,7 @@ const AddTodo = () => {
               if (nativeEvent.value) {
                 onCreateTriggerNotification({
                   id: watch('id') as string,
-                  time_end: watch('time_end'),
+                  time_start: watch('time_start'),
                   comment: watch('comment') as string,
                   title: watch('title'),
                 });

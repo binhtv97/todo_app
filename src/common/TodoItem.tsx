@@ -1,18 +1,19 @@
-import {StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {ITodo} from '@store/types';
-import {deviceWidth, ph} from '@themes/metrics';
-import {Row} from '@components/Row';
-import {ReadMoreText} from '@components/ReadMoreText';
-import {compareTime} from '@utilities/date';
-import {colors} from '@themes/colors';
+import {StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
+import React, {useState} from "react";
+import {ITodo} from "@store/types";
+import {deviceWidth, ph} from "@themes/metrics";
+import {Row} from "@components/Row";
+import {ReadMoreText} from "@components/ReadMoreText";
+import {compareTime} from "@utilities/date";
+import {colors} from "@themes/colors";
 import {
   onCancelTiggerNotification,
   onCreateTriggerNotification,
-} from '../notification/notification';
-import {CustomImage} from '@components/Images';
-import {appActions} from '@store/reducers';
-import {useDispatch} from 'react-redux';
+} from "../notification/notification";
+import {CustomImage} from "@components/Images";
+import {appActions} from "@store/reducers";
+import {useDispatch} from "react-redux";
+import {Space} from "@components/Space";
 
 const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
   const [status, setStatus] = useState(item.noti);
@@ -25,11 +26,11 @@ const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
   };
 
   const statusColorText = () => {
-    if (item.status === 'Critical') {
+    if (item.status === "Critical") {
       return colors.primary;
-    } else if (item.status === 'Finish') {
+    } else if (item.status === "Finish") {
       return colors.successLighter;
-    } else if (item.status === 'Pending') {
+    } else if (item.status === "Pending") {
       return colors.secondaryLight;
     }
     return colors.skyLight;
@@ -48,10 +49,10 @@ const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
           </Row>
           <Row>
             <View style={styles.left}>
-              <Text style={styles.title}>Need Finish At:</Text>
+              <Text style={styles.title}>Time Start:</Text>
             </View>
             <View style={styles.right}>
-              <Text style={styles.text}>{item.time_end}</Text>
+              <Text style={styles.text}>{item.time_start}</Text>
             </View>
           </Row>
           <Row>
@@ -69,13 +70,13 @@ const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
             <View style={styles.right}>
               <Switch
                 value={status}
-                disabled={compareTime(item.time_end as string)}
+                disabled={compareTime(item.time_start as string)}
                 onChange={({nativeEvent}) => {
                   setStatus(nativeEvent.value);
                   if (nativeEvent.value) {
                     onCreateTriggerNotification({
                       id: item.id,
-                      time_end: item.time_end,
+                      time_start: item.time_start,
                       comment: item.comment,
                       title: item.title,
                     });
@@ -94,7 +95,7 @@ const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
               <ReadMoreText
                 textStyle={styles.title}
                 text={item.comment as string}
-                readMoreStyle={{color: 'black'}}
+                readMoreStyle={{color: "black"}}
               />
             </View>
           </Row>
@@ -103,10 +104,14 @@ const TodoItem = ({item, date}: {item: ITodo; date: string}) => {
           <TouchableOpacity onPress={onRemove}>
             <CustomImage name="ic_close" style={styles.icon} />
           </TouchableOpacity>
-          {item.status !== 'Finish' && (
-            <TouchableOpacity onPress={onFinish}>
-              <CustomImage name="ic_check" style={styles.icon} />
-            </TouchableOpacity>
+
+          {item.status !== "Finish" && (
+            <>
+              <Space height={15} />
+              <TouchableOpacity onPress={onFinish}>
+                <CustomImage name="ic_check" style={styles.icon} />
+              </TouchableOpacity>
+            </>
           )}
         </View>
       </Row>
@@ -118,14 +123,17 @@ export default TodoItem;
 
 const styles = StyleSheet.create({
   item: {
-    width: deviceWidth(),
+    width: "100%",
     minHeight: ph(100),
     marginBottom: ph(10),
     backgroundColor: colors.sky,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 10,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     lineHeight: 25,
   },
   text: {
@@ -139,13 +147,13 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   icon: {
-    tintColor: 'white',
+    tintColor: "white",
     width: 20,
     height: 25,
   },
   iconView: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
