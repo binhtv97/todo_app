@@ -6,21 +6,18 @@ import {
   TextStyle,
   View,
   ViewStyle,
-} from 'react-native';
-import React, {memo, useMemo} from 'react';
-import {FontSizes, metrics, ph, pw} from '@themes/metrics';
-import {colors} from '@themes/colors';
+} from "react-native";
+import React, {memo, useMemo} from "react";
+import {FontSizes, metrics, ph, pw, colors, BORDER_WIDTH_05} from "@themes";
 import {
   useFieldArray,
   Controller,
   FieldArrayPath,
   Path,
   useFormContext,
-} from 'react-hook-form';
-import {Error} from '@components/ErrorText';
-import {splitItemInListToRow} from '@utilities/utils';
-import {Row} from '@components/Row';
-import {BORDER_WIDTH_05} from '@themes/theme';
+} from "react-hook-form";
+import {Error, Row} from "@components";
+import {splitItemInListToRow} from "@utilities/utils";
 
 export interface ItemSelectI extends Record<string, any> {
   isSelect?: boolean;
@@ -69,20 +66,22 @@ export const SelectOptions = selectFormMemo(
     const {fields, update} = useFieldArray<
       SelectOptionType<ItemSelectI>,
       FieldArrayPath<SelectOptionType<ItemSelectI>>,
-      'idField'
+      "idField"
     >({
       control,
       name,
-      keyName: 'idField',
+      keyName: "idField",
     });
 
     const tagListThreeItemARow = useMemo(
       () => splitItemInListToRow(numberItemARow, fields),
-      [fields, numberItemARow],
+      [fields, numberItemARow]
     );
 
     const onItemPress = (item: ItemSelectI) => {
-      const editedItem = fields.findIndex(obj => obj[filter] === item[filter]);
+      const editedItem = fields.findIndex(
+        (obj) => obj[filter] === item[filter]
+      );
       update(editedItem, {
         ...item,
         isSelect: !item.isSelect,
@@ -101,12 +100,13 @@ export const SelectOptions = selectFormMemo(
                   FULLWIDTH_PERCENT / numberItemARow - numberItemARow * 0.5
                 }%`,
               },
-              fields?.find(fieldItem => fieldItem[filter] === item?.[filter])
+              fields?.find((fieldItem) => fieldItem[filter] === item?.[filter])
                 ?.isSelect && styles.itemActive,
             ]}
-            onPress={() => onItemPress(item)}>
+            onPress={() => onItemPress(item)}
+          >
             <Text numberOfLines={1} style={itemTextStyle}>
-              {(item[itemTitle] as string) ?? ''}
+              {(item[itemTitle] as string) ?? ""}
             </Text>
           </Pressable>
         )}
@@ -134,29 +134,29 @@ export const SelectOptions = selectFormMemo(
         )}
       </View>
     );
-  },
+  }
 );
 const styles = StyleSheet.create({
   title: {
     fontSize: metrics.title,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   itemView: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   itemViewWrapper: {
-    justifyContent: 'flex-start',
-    width: '100%',
+    justifyContent: "flex-start",
+    width: "100%",
   },
   item: {
     marginRight: metrics.xxs,
     marginBottom: metrics.borderRadiusHuge,
     height: ITEM_HEIGHT,
     borderRadius: ITEM_BORDER,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: BORDER_WIDTH_05,
     backgroundColor: colors.skin_pink,
   },

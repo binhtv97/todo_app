@@ -1,17 +1,18 @@
 import {FlatList, StyleSheet, Text} from "react-native";
 import React, {PropsWithChildren} from "react";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import RouteKey from "@navigation/RouteKey";
+import {AppStackParamList} from "@navigation/Types";
+
 import Container from "@components/Container";
 import {useSelector} from "react-redux";
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {AppStackParamList} from "@navigation/Types";
-import RouteKey from "@navigation/RouteKey";
 import {getAppState} from "@store/selectors/app";
 import {ITodo} from "@store/types";
 import {getDate} from "@utilities/date";
 import TodoItem from "@common/TodoItem";
 import {navigate} from "@navigation/RootNavigation";
 import moment from "moment";
-import {pw} from "@themes/metrics";
+import {pw} from "@themes";
 
 type Props = NativeStackScreenProps<AppStackParamList, RouteKey.ViewListTodo> &
   PropsWithChildren;

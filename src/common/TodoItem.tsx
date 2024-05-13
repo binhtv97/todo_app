@@ -1,16 +1,14 @@
 import {StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 import {ITodo} from "@store/types";
-import {deviceWidth, ph} from "@themes/metrics";
-import {Row} from "@components/Row";
-import {ReadMoreText} from "@components/ReadMoreText";
+import {ph} from "@themes/metrics";
+import {Row, CustomImage, ReadMoreText} from "@components";
 import {compareTime} from "@utilities/date";
 import {colors} from "@themes/colors";
 import {
   onCancelTiggerNotification,
   onCreateTriggerNotification,
 } from "../notification/notification";
-import {CustomImage} from "@components/Images";
 import {appActions} from "@store/reducers";
 import {useDispatch} from "react-redux";
 import {Space} from "@components/Space";
